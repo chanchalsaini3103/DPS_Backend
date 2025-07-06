@@ -2,44 +2,46 @@ package com.example.dps.model;
 
 import jakarta.persistence.*;
 
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "enquiry")
 public class Enquiry {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "academic_year", length = 50)
+    @Column(name = "academic_year")
     private String academicYear;
 
-    @Column(name = "school", length = 100)
+    @Column(name = "school")
     private String school;
 
-    @Column(name = "first_name", length = 100)
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name", length = 100)
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "relation", length = 20)
+    @Column(name = "relation")
     private String relation;
 
-    @Column(name = "email", length = 150)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "country_code", length = 10)
+    @Column(name = "country_code")
     private String countryCode;
 
-    @Column(name = "contact_number", length = 20)
+    @Column(name = "contact_number")
     private String contactNumber;
 
-    @Column(name = "grade", length = 50)
+    @Column(name = "grade")
     private String grade;
 
-    @Column(name = "query", columnDefinition = "TEXT")
+    @Column(name = "query")
     private String query;
 
-    // Getters and Setters
-    // (You can use Lombok @Getter @Setter or manually add them)
+    // Getters & setters
 }
