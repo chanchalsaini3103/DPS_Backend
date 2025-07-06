@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api")
 public class RegistrationController {
 
     @Autowired
     private StudentRepository studentRepository;
+
+
 
     @Autowired
     private ParentRepository parentRepository;
@@ -43,4 +44,6 @@ public class RegistrationController {
 
         }
     }
+
+
 }
