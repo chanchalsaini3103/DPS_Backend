@@ -32,12 +32,12 @@ public class RegistrationController {
         try {
             Parent parent = student.getParent();
 
-            // 🔍 Check for existing Parent
+
             Optional<Parent> existingParent = parentRepository.findByFatherEmail(parent.getFatherEmail());
             if (existingParent.isPresent()) {
                 parent = existingParent.get(); // reuse existing parent
             } else {
-                // Duplicate checks
+
                 boolean emailExists = parentRepository.existsByMotherEmail(parent.getMotherEmail());
                 boolean phoneExists = parentRepository.existsByFatherPhone(parent.getFatherPhone()) ||
                         parentRepository.existsByMotherPhone(parent.getMotherPhone());
@@ -52,19 +52,19 @@ public class RegistrationController {
                             .body(Collections.singletonMap("error", "Phone already registered."));
                 }
 
-                // Save new parent if not found
+
                 parent = parentRepository.save(parent);
             }
 
-            // 🔁 Now parent is saved → check for duplicate student under this parent
+
             if (studentRepository.existsByFirstNameAndLastNameAndDobAndParent(
                     student.getFirstName(), student.getLastName(), student.getDob(), parent)) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body(Collections.singletonMap("error", "Student already registered under this parent."));
             }
 
-            student.setParent(parent); // attach parent
-            studentRepository.save(student); // save student
+            student.setParent(parent);
+            studentRepository.save(student);
 
             return ResponseEntity.ok(Collections.singletonMap("message", "Saved successfully"));
 

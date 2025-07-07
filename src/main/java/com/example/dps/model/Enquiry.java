@@ -43,5 +43,4 @@ public class Enquiry {
     @Column(name = "query")
     private String query;
 
-    // Getters & setters
 }
