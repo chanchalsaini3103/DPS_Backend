@@ -22,8 +22,6 @@ public class RegistrationController {
     @Autowired
     private StudentRepository studentRepository;
 
-
-
     @Autowired
     private ParentRepository parentRepository;
 
@@ -31,7 +29,6 @@ public class RegistrationController {
     public ResponseEntity<?> registerStudent(@RequestBody Student student) {
         try {
             Parent parent = student.getParent();
-
 
             Optional<Parent> existingParent = parentRepository.findByFatherEmail(parent.getFatherEmail());
             if (existingParent.isPresent()) {
@@ -51,7 +48,6 @@ public class RegistrationController {
                     return ResponseEntity.status(HttpStatus.CONFLICT)
                             .body(Collections.singletonMap("error", "Phone already registered."));
                 }
-
 
                 parent = parentRepository.save(parent);
             }
@@ -73,7 +69,7 @@ public class RegistrationController {
                     .body(Collections.singletonMap("error", "Registration failed: " + e.getMessage()));
         }
     }
-
+//for login handleSendOtp
     @GetMapping("/verify-parent")
     public ResponseEntity<?> verifyParent(@RequestParam String email, @RequestParam String phone) {
         boolean exists = parentRepository.existsByFatherEmailAndFatherPhone(email, phone) ||
@@ -87,13 +83,14 @@ public class RegistrationController {
         }
     }
 
+
+//    handleVerifyOtp login
     @GetMapping("/parent/find-by-email-phone")
     public ResponseEntity<Map<String, Object>> getByEmailAndPhone(@RequestParam String email, @RequestParam String phone) {
         Optional<Parent> parentOpt = parentRepository.findByAnyParentEmailAndPhone(email, phone);
         if (parentOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
         Parent parent = parentOpt.get();
         String loggedInAs = "";
 
@@ -110,5 +107,22 @@ public class RegistrationController {
         return ResponseEntity.ok(response);
     }
 
+    // API: Check if parent already exists while registering
+    @GetMapping("/check-parent")
+    public ResponseEntity<Map<String, Boolean>> checkParentExists(
+            @RequestParam String email,
+            @RequestParam String phone,
+            @RequestParam String type
+    ) {
+        boolean exists = false;
+        if ("Father".equalsIgnoreCase(type)) {
+            exists = parentRepository.existsByFatherEmailAndFatherPhone(email, phone);
+        } else if ("Mother".equalsIgnoreCase(type)) {
+            exists = parentRepository.existsByMotherEmailAndMotherPhone(email, phone);
+        }
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
 
 }

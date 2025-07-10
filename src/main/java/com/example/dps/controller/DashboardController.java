@@ -18,15 +18,6 @@ public class DashboardController {
     @Autowired
     private ParentRepository parentRepository;
 
-    @GetMapping("/parents")
-    public List<Parent> getAllParentsWithStudents() {
-        return parentRepository.findAll();
-    }
-    @GetMapping("/api/dashboard/parent/{id}")
-    public ResponseEntity<Parent> getParentById(@PathVariable Long id) {
-        Parent parent = parentRepository.findById(id).orElseThrow(() -> new RuntimeException("Parent not found"));
-        return ResponseEntity.ok(parent);
-    }
     @GetMapping("/parent/{id}")
     public ResponseEntity<Parent> getParentWithStudents(@PathVariable Long id) {
         Parent parent = parentRepository.findById(id)
